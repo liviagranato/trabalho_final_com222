@@ -1,0 +1,12 @@
+.fundo{
+    background-color: #F8F9FB;
+    position: relative;
+    height: 100%;
+}
+
+.fundo-container{
+    padding-top: 20px;
+    background-color: white;
+    position: relative;
+    bottom: 0;
+}
