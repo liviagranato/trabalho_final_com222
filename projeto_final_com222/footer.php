@@ -39,7 +39,7 @@
 
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#!">Unifei</a>
+                        <a href="http://www.unifei.edu.br">Unifei</a>
                     </li>
                 </ul>
 

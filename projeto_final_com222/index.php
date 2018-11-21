@@ -32,7 +32,7 @@ include_once 'DatabaseConnection.php';
                     <div class="card-header">Buscar</div>
                     <div class="card-body">
                         <p class="card-text">
-                        <form class="form-group">
+                        <form class="form-group" method="get" action="searchBrowse.php">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 
                         </form>
@@ -53,7 +53,7 @@ include_once 'DatabaseConnection.php';
                                 $resultado = $conn->query($query);
                                 if ($resultado->num_rows > 0){
                                     while ($row = $resultado->fetch_assoc()){
-                                        echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'">'.$row['CategoryName'].'</a></li>';
+                                        echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'\'">'.$row['CategoryName'].'</a></li>';
                                     }
                                 }
                             ?>
@@ -73,13 +73,13 @@ include_once 'DatabaseConnection.php';
                         while($row = $resultado->fetch_assoc()){
                             $s = substr($row['description'], 0, 260);
                             $result = substr($s, 0, strrpos($s, ' '));
-                            $more = '<a href="#">Mais...</a>';
+                            $more = '<a onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" href="#">Mais...</a>';
                             echo '<li class="list-group-item">
                                   <div>
-                                       <h4>'.$row['title'].'</h4> 
+                                       <h4><a href="#" onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'">'.$row['title'].'</a></h4> 
                                             <table>
                                                 <td>
-                                                    <img src="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
+                                                    <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
                                                 </td>
                                                 <td>
                                                     '.$result.' '.$more.'
