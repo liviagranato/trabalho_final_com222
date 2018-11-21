@@ -49,13 +49,13 @@ include_once 'DatabaseConnection.php';
                             <?php
 
 
-                                $query = "SELECT distinct bc.* from bookcategories as bc join bookcategoriesbooks as bcb on bc.CategoryID = bcb.CategoryID order by bc.CategoryName asc";
-                                $resultado = $conn->query($query);
-                                if ($resultado->num_rows > 0){
-                                    while ($row = $resultado->fetch_assoc()){
-                                        echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'">'.$row['CategoryName'].'</a></li>';
-                                    }
+                            $query = "SELECT distinct bc.* from bookcategories as bc join bookcategoriesbooks as bcb on bc.CategoryID = bcb.CategoryID order by bc.CategoryName asc";
+                            $resultado = $conn->query($query);
+                            if ($resultado->num_rows > 0){
+                                while ($row = $resultado->fetch_assoc()){
+                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'">'.$row['CategoryName'].'</a></li>';
                                 }
+                            }
                             ?>
                         </ul>
                         </p>
@@ -66,15 +66,16 @@ include_once 'DatabaseConnection.php';
 
             <div class="col-md-8 mx-auto">
                 <ul class="list-group">
-                    <?php
-                    $query = "SELECT * from bookcategoriesbooks as bcb join bookdescriptions as bd on bcb.ISBN = bd.ISBN ORDER BY RAND() LIMIT 3";
-                    $resultado = $conn -> query($query);
-                    if ($resultado->num_rows>0){
-                        while($row = $resultado->fetch_assoc()){
-                            $s = substr($row['description'], 0, 260);
-                            $result = substr($s, 0, strrpos($s, ' '));
-                            $more = '<a href="#">Mais...</a>';
-                            echo '<li class="list-group-item">
+                <?php
+                $id = $_GET['id'];
+                $query = "SELECT bd.* from bookcategoriesbooks as bcb  join bookdescriptions as bd on bcb.ISBN = bd.ISBN where bcb.CategoryID = '$id'";
+                $resultado = $conn -> query($query);
+                if ($resultado->num_rows>0){
+                    while($row = $resultado->fetch_assoc()){
+                        $s = substr($row['description'], 0, 260);
+                        $result = substr($s, 0, strrpos($s, ' '));
+                        $more = '<a href="#">Mais...</a>';
+                        echo '<li class="list-group-item">
                                   <div>
                                        <h4>'.$row['title'].'</h4> 
                                             <table>
@@ -82,14 +83,15 @@ include_once 'DatabaseConnection.php';
                                                     <img src="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
                                                 </td>
                                                 <td>
-                                                    '.$result.' '.$more.'
+                                                    '.$s.' '.$more.'
                                                 </td>
                                             </table>
                                   </div>
                               </li>';
-                        }
                     }
-                    ?>
+                }
+                ?>
+
                 </ul>
             </div>
         </div>
