@@ -16,14 +16,10 @@
                 <li class="nav-item right">
                     <lu class="navbar-nav mr-auto">
                         <li class="nav-item right">
-                            <a class="nav-link" href="#">
-                                <span class="oi oi-cart">Ver Carrinho</span></a>
-
+                            <button class="btn btn-link float-right"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
                         </li>
                         <li class="nav-item right">
-                            <a class="nav-link" href="#">
-                                <span>Sua Conta</span></a>
-
+                            <button class="btn btn-link float-right"><i class="fas fa-user"></i> Sua Conta</button>
                         </li>
                     </lu>
                 </li>

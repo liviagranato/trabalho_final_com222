@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
-    <title>Início</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <title>Produto</title>
+
 </head>
 <body class="background-index">
 
@@ -53,7 +56,7 @@ include_once 'DatabaseConnection.php';
                             $resultado = $conn->query($query);
                             if ($resultado->num_rows > 0){
                                 while ($row = $resultado->fetch_assoc()){
-                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'\'">'.$row['CategoryName'].'</a></li>';
+                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'&nome='.$row['CategoryName'].'\'">'.$row['CategoryName'].'</a></li>';
                                 }
                             }
                             ?>
@@ -68,10 +71,60 @@ include_once 'DatabaseConnection.php';
                 <ul class="list-group">
                     <?php
                     $ISBN = $_GET['id'];
-                    $query = "SELECT * from bookdescription where ISBN = '$ISBN'";
+                    $query = "SELECT * from bookdescriptions where ISBN = '$ISBN'";
+                    $query_authores = "SELECT * from bookauthors as ba join bookauthorsbooks as bab on ba.AuthorID = bab.AuthorID where bab.ISBN = '$ISBN'";
                     $resultado = $conn -> query($query);
+                    $resultado_authores = $conn->query($query_authores);
                     if ($resultado->num_rows>0){
-                        
+                        $row = $resultado->fetch_assoc();
+                        echo '
+                            <div>
+                                <h3>'.$row['title'].'</h3><br/>
+                                <p>Por ';
+                                    while ($authores = $resultado_authores->fetch_array()){
+                                        echo'<a href="#">'.$authores['nameF'].' '.$authores['nameL'].'</a> ';
+                                    }
+
+                                echo '</p>
+                                            <table>
+                                                <td>
+                                                    <img onclick="window.location.href="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN'].'.01.LZZZZZZZ.jpg" src="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN']. '.01.MZZZZZZZ.jpg">
+                                                </td>
+                                                <td width="100%">
+                                                    <ul class="list-unstyled tamanho-18">
+                                                        <li>
+                                                            <b>Preço:</b> <span style="color:#de010c"><b>R$ ' .$row['price'].'</b></span>
+                                                        </li>
+                                                    </ul>
+                                                    <ul class="list-unstyled tamanho-14">
+                                                        <li>
+                                                            <b>ISBN:</b> '.$row['ISBN'].'
+                                                        </li>
+                                                        <li>
+                                                            <b>Editora:</b> '.$row['publisher'].'
+                                                        </li>
+                                                        <li>
+                                                            <b>Páginas:</b> '.$row['pages'].'
+                                                        </li>
+                                                        <li>
+                                                            <b>Edição:</b> '.$row['edition'].'
+                                                        </li>
+                                                    
+                                                    </ul>
+                                                    <ul>
+                                                       <button class="btn btn-success float-right"><i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho</button>
+                                                    </ul>
+                                                </td>
+                                            </table>
+                                            <br/>
+                                            <div class="text-justify">
+                                            '.$row['description'].'
+                                            </div>
+                                            <button class="btn btn-success float-right"><i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho</button>
+                                            
+                                            
+                            </div>
+                        ';
 
                     }
                     ?>
@@ -96,6 +149,8 @@ include_once 'DatabaseConnection.php';
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+
+
 
 </body>
 </html>

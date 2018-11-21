@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
-    <title>Início</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <title>Resultado de Pesquisa</title>
+
 </head>
 <body class="background-index">
 
@@ -53,7 +56,7 @@ include_once 'DatabaseConnection.php';
                             $resultado = $conn->query($query);
                             if ($resultado->num_rows > 0){
                                 while ($row = $resultado->fetch_assoc()){
-                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'\'">'.$row['CategoryName'].'</a></li>';
+                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'&nome='.$row['CategoryName'].'\'">'.$row['CategoryName'].'</a></li>';
                                 }
                             }
                             ?>
@@ -68,13 +71,18 @@ include_once 'DatabaseConnection.php';
                 <ul class="list-group">
                 <?php
                 $id = $_GET['id'];
+                $nome = $_GET['nome'];
                 $query = "SELECT bd.* from bookcategoriesbooks as bcb  join bookdescriptions as bd on bcb.ISBN = bd.ISBN where bcb.CategoryID = '$id'";
                 $resultado = $conn -> query($query);
+                echo '<h3>Resultados para '.$nome.'</h3><br/>';
                 if ($resultado->num_rows>0){
+
+
                     while($row = $resultado->fetch_assoc()){
                         $s = substr($row['description'], 0, 260);
                         $result = substr($s, 0, strrpos($s, ' '));
                         $more = '<a onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" href="#">Mais...</a>';
+
                         echo '<li class="list-group-item">
                                   <div>
                                        <h4><a href="#" onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'">'.$row['title'].'</a></h4> 
@@ -113,6 +121,5 @@ include_once 'DatabaseConnection.php';
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
-
 </body>
 </html>
