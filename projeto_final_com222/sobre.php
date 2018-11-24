@@ -78,9 +78,10 @@ include_once 'DatabaseConnection.php';
                 <p>
                     <b>Membros da equipe:</b></br>
                     Lívia Granato </br>
-                    Luis Henrique </br>
-                    Thiago Silva </br>
+                    Luiz Henrique </br>
                     Ramon Martins </br>
+                    Thiago Silva </br>
+
                 </p>
             </div>
 

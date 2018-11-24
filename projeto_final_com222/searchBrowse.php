@@ -88,9 +88,9 @@ include_once 'DatabaseConnection.php';
                                        <h4><a href="#" onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'">'.$row['title'].'</a></h4> 
                                             <table>
                                                 <td>
-                                                    <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
+                                                    <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
                                                 </td>
-                                                <td>
+                                                <td style="padding-left: 15px">
                                                     '.$result.' '.$more.'
                                                 </td>
                                             </table>

@@ -88,9 +88,9 @@ include_once 'DatabaseConnection.php';
                                 echo '</p>
                                             <table>
                                                 <td>
-                                                    <img onclick="window.location.href="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN'].'.01.LZZZZZZZ.jpg" src="www.baldochi.unifei.edu.br/COM222/trabfinal/imagens/'.$row['ISBN']. '.01.MZZZZZZZ.jpg">
+                                                    <a href="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.LZZZZZZZ.jpg"><img src="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.MZZZZZZZ.jpg"></a>
                                                 </td>
-                                                <td width="100%">
+                                                <td width="100%" style="padding-left: 15px">
                                                     <ul class="list-unstyled tamanho-18">
                                                         <li>
                                                             <b>Preço:</b> <span style="color:#de010c"><b>R$ ' .$row['price'].'</b></span>

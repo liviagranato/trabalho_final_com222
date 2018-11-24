@@ -1,3 +1,10 @@
+.centro{
+	margin-right: auto;
+	margin-left: auto;
+	position: absolute;
+
+}
+
 .fundo{
     background-color: #F8F9FB;
     position: relative;
