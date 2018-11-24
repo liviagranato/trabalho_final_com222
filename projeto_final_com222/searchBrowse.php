@@ -35,12 +35,15 @@ include_once 'DatabaseConnection.php';
                     <div class="card-header">Buscar</div>
                     <div class="card-body">
                         <p class="card-text">
-                        <form class="form-group">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
+                        <form class="form-group" method="post" action="searchBrowse.php">
+                            <input class="form-control mr-sm-2" name="palavra_chave" id="palavra_chave" type="search" placeholder="Search" aria-label="Search">
+                            <br/>
+                            <input class="btn btn-primary btn-block" value="Buscar" name="submit" id="submit" type="submit" formaction="searchBrowse.php">
                         </form>
-                        <button class="btn btn-primary btn-block" type="submit">Buscar</button>
+
                         </p>
+
+
                     </div>
                 </div>
 
@@ -67,9 +70,62 @@ include_once 'DatabaseConnection.php';
 
             </div>
 
-            <div class="col-md-8 mx-auto">
-                <ul class="list-group">
-                <?php
+            <?php
+            $tag = '';
+            if (isset($_POST['submit'])) {
+            $palavra = $_POST['palavra_chave'];
+                $tag='search';
+            } else {
+                $tag = 'browse';
+            }
+
+            if ($tag=='search'){
+                echo '<div class="col-md-8 mx-auto">
+                <ul class="list-group">';
+
+                $query = "SELECT distinct bab.ISBN, ba.nameF, ba.nameL, bc.CategoryName, bd.* from bookauthors as ba 
+                            join bookauthorsbooks as bab on ba.AuthorID=bab.AuthorID 
+                            join bookcategoriesbooks as bcb on bcb.ISBN = bab.ISBN 
+                            join bookcategories as bc on bc.CategoryID = bcb.CategoryID 
+                            join bookdescriptions as bd on bd.ISBN = bcb.ISBN 
+                            where ba.nameF like '%$palavra%' 
+                            or ba.nameL like '%$palavra%'
+                            or bc.CategoryName like '%$palavra%'
+                            or bd.title like '%$palavra%'
+                            or bd.description like '%$palavra%'
+                            or bd.publisher like '%$palavra%' group by bd.ISBN order by bd.title asc";
+                $resultado = $conn -> query($query);
+                echo '<h3>Resultados para sua busca: "'.$palavra.'"</h3><br/>';
+                if ($resultado->num_rows>0){
+
+                    while($row = $resultado->fetch_assoc()){
+                        $s = substr($row['description'], 0, 260);
+                        $result = substr($s, 0, strrpos($s, ' '));
+                        $more = '<a onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" href="#">Mais...</a>';
+
+                        echo '<li class="list-group-item">
+                                  <div>
+                                       <h4><a href="#" onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'">'.$row['title'].'</a></h4> 
+                                            <table>
+                                                <td>
+                                                    <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
+                                                </td>
+                                                <td style="padding-left: 15px" class="text-justify">
+                                                    '.$result.' '.$more.'
+                                                </td>
+                                            </table>
+                                  </div>
+                              </li>';
+                    }
+                }
+                echo '</ul>
+            </div>';
+
+
+            } else{
+            echo '<div class="col-md-8 mx-auto">
+                <ul class="list-group">';
+
                 $id = $_GET['id'];
                 $nome = $_GET['nome'];
                 $query = "SELECT bd.* from bookcategoriesbooks as bcb  join bookdescriptions as bd on bcb.ISBN = bd.ISBN where bcb.CategoryID = '$id'";
@@ -90,7 +146,7 @@ include_once 'DatabaseConnection.php';
                                                 <td>
                                                     <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
                                                 </td>
-                                                <td style="padding-left: 15px">
+                                                <td style="padding-left: 15px" class="text-justify">
                                                     '.$result.' '.$more.'
                                                 </td>
                                             </table>
@@ -98,10 +154,11 @@ include_once 'DatabaseConnection.php';
                               </li>';
                     }
                 }
-                ?>
+                echo '</ul>
+            </div>';
 
-                </ul>
-            </div>
+            }
+        ?>
         </div>
     </div>
 </div>

@@ -35,12 +35,15 @@ include_once 'DatabaseConnection.php';
                     <div class="card-header">Buscar</div>
                     <div class="card-body">
                         <p class="card-text">
-                        <form class="form-group" >
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
+                        <form class="form-group" method="post" action="searchBrowse.php">
+                            <input class="form-control mr-sm-2" name="palavra_chave" id="palavra_chave" type="search" placeholder="Search" aria-label="Search">
+                            <br/>
+                            <input class="btn btn-primary btn-block" value="Buscar" name="submit" id="submit" type="submit" formaction="searchBrowse.php">
                         </form>
-                        <button class="btn btn-primary btn-block" type="submit">Buscar</button>
+
                         </p>
+
+
                     </div>
                 </div>
 

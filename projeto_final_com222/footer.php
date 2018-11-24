@@ -52,7 +52,9 @@
     <!-- Footer Links -->
 
     <!-- Copyright -->
-    <div class="footer-copyright text-center py-3" style="background-color: lightgrey">© 2018 Copyright:
+    <div class="footer-copyright text-center py-3" style="background-color: lightgrey">
+        Universidade Federal de Itajubá - UNIFEI<br/>
+        © 2018 Copyright:
         <a href="#">COM222</a>
     </div>
     <!-- Copyright -->

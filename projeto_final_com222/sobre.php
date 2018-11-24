@@ -34,12 +34,15 @@ include_once 'DatabaseConnection.php';
                     <div class="card-header">Buscar</div>
                     <div class="card-body">
                         <p class="card-text">
-                        <form class="form-group">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
+                        <form class="form-group" method="post" action="searchBrowse.php">
+                            <input class="form-control mr-sm-2" name="palavra_chave" id="palavra_chave" type="search" placeholder="Search" aria-label="Search">
+                            <br/>
+                            <input class="btn btn-primary btn-block" value="Buscar" name="submit" id="submit" type="submit" formaction="searchBrowse.php">
                         </form>
-                        <button class="btn btn-primary btn-block" type="submit">Buscar</button>
+
                         </p>
+
+
                     </div>
                 </div>
 
@@ -69,8 +72,14 @@ include_once 'DatabaseConnection.php';
             <div class="col-md-8 mx-auto">
                 <h1>Sobre o LivrosWebDev</h1>
                 <br/>
-                <p>
+                <p class="text-justify">
                     Esse site foi desenvolvido como parte da disciplina Desenvolvimento de Sistemas na Web.
+                    A linguagem utilizada neste projeto foi PHP, juntamente com o framework de desenvolvimento Front-End, Bootstrap.
+                    O banco utilizado foi MySql devido à facilidade de comunicação e conexão com programas PHP.
+                    A IDE utilizada foi, majoritariamente, o PhpStorm por ser simples e especialmente criado para projetos da linguagem escolhida.
+                    <br/><br/>
+                    O desenvolvimento fez uso da plataforma GitHub para compartilhamento de arquivos e realizar o commit dos dados, de forma a garantir
+                    a versão correta do projeto, bem como realizar um backup seguro do trabalho.
                 </p>
                 <p>
                     A aplicação consta em um site de e-commerce de livros e foi baseada no site <a href="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/index.php">GeekBooks.com</a>
@@ -81,6 +90,7 @@ include_once 'DatabaseConnection.php';
                     Luiz Henrique </br>
                     Ramon Martins </br>
                     Thiago Silva </br>
+
 
                 </p>
             </div>

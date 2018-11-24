@@ -36,12 +36,15 @@ include_once 'DatabaseConnection.php';
                     <div class="card-header">Buscar</div>
                     <div class="card-body">
                         <p class="card-text">
-                        <form class="form-group" method="get" action="searchBrowse.php">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
+                        <form class="form-group" method="post" action="searchBrowse.php">
+                            <input class="form-control mr-sm-2" name="palavra_chave" id="palavra_chave" type="search" placeholder="Search" aria-label="Search">
+                            <br/>
+                            <input class="btn btn-primary btn-block" value="Buscar" name="submit" id="submit" type="submit" formaction="searchBrowse.php">
                         </form>
-                        <button class="btn btn-primary btn-block" type="submit">Buscar</button>
+
                         </p>
+
+
                     </div>
                 </div>
 
@@ -57,7 +60,7 @@ include_once 'DatabaseConnection.php';
                                 $resultado = $conn->query($query);
                                 if ($resultado->num_rows > 0){
                                     while ($row = $resultado->fetch_assoc()){
-                                        echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'&nome='.$row['CategoryName'].'\'">'.$row['CategoryName'].'</a></li>';
+                                        echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'&nome='.$row['CategoryName'].'&tag='.'browse'.'\'">'.$row['CategoryName'].'</a></li>';
                                     }
                                 }
                             ?>
@@ -71,7 +74,7 @@ include_once 'DatabaseConnection.php';
             <div class="col-md-8 mx-auto">
                 <ul class="list-group">
                     <?php
-                    $query = "SELECT * from bookcategoriesbooks as bcb join bookdescriptions as bd on bcb.ISBN = bd.ISBN ORDER BY RAND() LIMIT 3";
+                    $query = "SELECT * from bookcategoriesbooks as bcb join bookdescriptions as bd on bcb.ISBN = bd.ISBN ORDER BY RAND() LIMIT 4";
                     $resultado = $conn -> query($query);
                     if ($resultado->num_rows>0){
                         while($row = $resultado->fetch_assoc()){
@@ -85,7 +88,7 @@ include_once 'DatabaseConnection.php';
                                                 <td>
                                                     <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
                                                 </td>
-                                                <td style="padding-left: 15px">
+                                                <td style="padding-left: 15px" class="text-justify">
                                                     '.$result.' '.$more.'
                                                 </td>
                                             </table>
