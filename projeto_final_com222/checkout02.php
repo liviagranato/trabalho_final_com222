@@ -1,15 +1,9 @@
-
 <?php 
 
 
 include 'navbar.php';
 include_once 'DatabaseConnection.php';
-
-function fIsValidEmail($email) {
-   //validate using php filter function. Returns true or false.
-   $email = trim($email);
-   return filter_var($email, FILTER_VALIDATE_EMAIL);
-}
+include_once 'ValidationUtilities.php';
 
 
 
@@ -28,39 +22,48 @@ $valido = fIsValidEmail($email);
                             if ($resultado->num_rows > 0){
                                 $row = $resultado -> fetch_assoc();
 
-                                echo '</p>
-                                            <table>
-                                                <td>
-                                                    
-                                                </td>
-                                                <td width="100%">
-                                                    <ul class="list-unstyled tamanho-18">
-                                                        <li>
-                                                            <b>Bem vindo</b> <span style="color:#de010c"><b> ' .$row['fname'].$row['lname'].'</b></span>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="list-unstyled tamanho-14">
-                                                        <li>
-                                                            <b>E-mail:</b> '.$row['email'].'
-                                                        </li>
-                                                        <li>
-                                                            <b>Cidade:</b> '.$row['city'].'/'.$row['state'].'
-                                                        </li>
-                                                        <li>
-                                                            <b>Rua:</b> '.$row['street'].'
-                                                        </li>
-                                                        
-                                                        <li>
-                                                            <b>CEP:</b> '.$row['zip'].'
-                                                        </li>
-                                                    
-                                                    </ul>
-                                                    
-                                                </td>
-                                            </table>
-                                            <br/>      
-                            </div>
-                        ';
+                                echo '
+
+                            <div class="container">
+
+                                <div class="row">
+                                    <div class="col-md4">
+
+                                    </div>
+                                    <div class="col-md4">
+                                        <p>Seja bem vindo : '.$row['fname'].' &nbsp;'.$row['lname'].'  </p>
+                                        <p>Confirme seus dados de entrega</p>
+                                        
+                                       <form action="checkout03.php" method="post" autocomplete="on" class="myForm">
+                                            
+                                            <div class="input-group">
+                                            <input class="form-control" type="hidden" value="'.$row['custID'].'" name="id" />
+                                            </div>
+
+                                            <div class="input-group">
+                                            <input class="form-control" type="text" value="'.$row['street'].'" name="street" placeholder="Rua" />
+                                            </div>
+                                            <div class="input-group">
+                                            <input class="form-control" type="text" value="'.$row['city'].'" name="city" placeholder="Cidade" />
+                                            </div>
+                                            <div class="input-group">
+                                            <input class="form-control" type="text" value="'.$row['state']. '" name="state" placeholder="Estado" />
+                                            </div>
+                                            <div class="input-group">
+                                            <input class="form-control" type="text" value="'.$row['zip'].'" name="zip" placeholder="CEP" />
+                                            
+                                            </div>
+                                             <div class="input-group-btn">
+                                            <button class="btn btn-info" name="confirmar" type="submit">Confirmar</button>
+                                              </div>
+             
+                                        </form>
+                                    </div>
+                                    <div class="col-md4">
+
+                                    </div>
+                                </div>
+                            </div>';
                             }else{
 
                                 echo '<div class="container">
@@ -113,13 +116,7 @@ $valido = fIsValidEmail($email);
 
                                     </div>';
 
-
-
-
                             }
-
-                            
-
 
 
    }else{
