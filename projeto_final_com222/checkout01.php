@@ -24,7 +24,7 @@
 
 <?php 
 include 'navbar.php';
-include_once 'DatabaseConnection.php';
+include_once 'databaseConnection.php';
 
 ?>
 

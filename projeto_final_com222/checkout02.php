@@ -2,8 +2,8 @@
 
 
 include 'navbar.php';
-include_once 'DatabaseConnection.php';
-include_once 'ValidationUtilities.php';
+include_once 'databaseConnection.php';
+include_once 'validationUtilities.php';
 
 
 
