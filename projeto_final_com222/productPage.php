@@ -115,7 +115,7 @@ include_once 'databaseConnection.php';
                                                     
                                                     </ul>
                                                     <ul>
-                                                       <button class="btn btn-success float-right"><i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho</button>
+                                                       <button onclick="window.location.href=\'shoppingCart.php?addISBN='.$row['ISBN'].'\'" class="btn btn-success float-right"><i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho</button>
                                                     </ul>
                                                 </td>
                                             </table>
@@ -123,7 +123,7 @@ include_once 'databaseConnection.php';
                                             <div class="text-justify">
                                             '.$row['description'].'
                                             </div>
-                                            <button class="btn btn-success float-right"><i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho</button>
+                                            <button onclick="window.location.href=\'shoppingCart.php?addISBN='.$row['ISBN'].'\'" class="btn btn-success float-right"><i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho</button>
                                             
                                             
                             </div>

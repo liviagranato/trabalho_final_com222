@@ -16,7 +16,7 @@
                 <li class="nav-item right">
                     <lu class="navbar-nav mr-auto">
                         <li class="nav-item right">
-                            <button class="btn btn-link float-right" ><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
+                            <button class="btn btn-link float-right" onclick="window.location.href='shoppingCart.php'"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
                         </li>
                         <li class="nav-item right">
                             <button class="btn btn-link float-right" ><i class="fas fa-user"></i> Sua Conta</button>
