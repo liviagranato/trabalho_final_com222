@@ -1,5 +1,3 @@
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,36 +24,40 @@
 include 'navbar.php';
 include_once 'databaseConnection.php';
 
+$numero_itens = $_COOKIE['BookCount'];
+
 ?>
+<div class="fundo" >
+    <div class="container fundo-container" style="height: 600px">
 
-<div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            
+          <div class="col-md-12 text-center">
+                <h2 class="text-center">Acessar sua Conta</h2>
+              <br/><br/>
+              <h4 class="text-center">Comprar Online é fácil e rápido!</h4>
+              <br/>
+              <h5 class="text-center">Você tem
+                  <?php
+                        echo ''.$numero_itens.'';
+                  ?>
+                  item(ns)  no carrinho.</h5>
+              <br/>
+              <table width="60%" style="margin-right:auto; margin-left:auto; ">
+                  <tr>
+                      <td>
+                        <form action="checkout02.php" method="post" autocomplete="on" class="form-group">
+                            <p class="text-justify">Inserir E-mail para prosseguir:</p>
+                            <div class="input-group">
+
+                            <input class="form-control mr-sm-2" type="text" name="email" id="email" placeholder="E-mail" required/>
+                              <br/><br/>
+                            <button class="btn btn-primary btn-block" name="enviar" type="submit">Continuar compra</button>
+                          </div>
+                        </form>
+                      </td>
+                  </tr>
+              </table>
           </div>
-          <div class="col-md-4">
-
-            <form action="checkout02.php" method="post" autocomplete="on" class="myForm">
-              
-
-              <div class="input-group">
-                <input class="form-control" type="text" name="email" placeholder="E-mail" />
-                  <div class="input-group-btn">
-                      <button class="btn btn-info" name="enviar" type="submit">Verifique seu E-mail</button>
-                  </div>
-              </div>
-             
-            </form>
-          
-          </div>
-          <div class="col-md-4">
-            
-          </div>
-          
-        </div>
-
-
-
+    </div>
 </div>
 
 
@@ -63,5 +65,8 @@ include_once 'databaseConnection.php';
 
   </body>
 </html>
+<?php
+include 'footer.php';
 
+?>
 

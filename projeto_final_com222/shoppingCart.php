@@ -25,51 +25,47 @@ include_once("validationUtilities.php");
 //PHP script uses an array for adding, removing and displaying the cart items.
 //Cookies can contain only string data so array must be serialized.
 
-
-if ($_GET['addISBN']){
-    $cookieName = "addISBN";
-    $addISBN = $_GET['addISBN'];
-    if (strlen($addISBN) > 0) {
-        if (isset($addISBN, $bookArray)) {
-            // Increment by +1
-            $bookArray[$addISBN] += 1;
-        } else {
-            // Add new item to cart
-            $bookArray[$addISBN] = 1;
-        }
-    }
-} else if ($_GET['deleteISBN']){
-    $cookieName = "deleteISBN";
-    $deleteISBN = $_GET['deleteISBN'];
-    if (strlen($deleteISBN) > 0) {
-        if (isset($bookArray[$deleteISBN])) {
-            // Deincrement by 1
-            $bookArray[$deleteISBN] -= 1;
-            // remove ISBN from array if qty==0
-            if ($bookArray[$deleteISBN] == 0) {
-                unset($bookArray[$deleteISBN]);
-            }
-        }
-    }
-}
-
-// retrieve cookie and unserialize into $bookArray
+$cookieName = "myCart2";
+error_reporting(0);
 if (isset($_COOKIE[$cookieName])) {
-   $bookArray = unserialize($_COOKIE[$cookieName]);
+    $bookArray = unserialize($_COOKIE[$cookieName]);
+}
+$addISBN = $_GET['addISBN'];
+if (strlen($addISBN) > 0) {
+    if (isset($addISBN, $bookArray)) {
+        // Increment by +1
+        $bookArray[$addISBN] += 1;
+    } else {
+        // Add new item to cart
+        $bookArray[$addISBN] = 1;
+    }
 }
 
+
+$deleteISBN = $_GET['deleteISBN'];
+if (strlen($deleteISBN) > 0) {
+    if (isset($bookArray[$deleteISBN])) {
+        // Deincrement by 1
+        $bookArray[$deleteISBN] -= 1;
+        // remove ISBN from array if qty==0
+        if ($bookArray[$deleteISBN] == 0) {
+            unset($bookArray[$deleteISBN]);
+        }
+    }
+}
 
 if (isset($bookArray)) {
-   // Write cookie
-   setcookie($cookieName, serialize($bookArray), time() + 60 * 60 * 24 * 180);
+    // Write cookie
+    setcookie($cookieName, serialize($bookArray), time() + 60 * 60 * 24 * 180);
 
-   //Count total books in cart
-   $totalbooks = 0;
-   foreach ($bookArray as $isbn => $qty) {
-      $totalbooks += $qty;
-   }
-   setCookie('BookCount', $totalbooks, time() + 60 * 60 * 24 * 180);
+    //Count total books in cart
+    $totalbooks = 0;
+    foreach ($bookArray as $isbn => $qty) {
+        $totalbooks += $qty;
+    }
+    setCookie('BookCount', $totalbooks, time() + 60 * 60 * 24 * 180);
 }
+
 ?>
 <div class="fundo">
     <div class="container fundo-container">
@@ -119,34 +115,78 @@ if (isset($bookArray)) {
                 <ul class="list-group">
                     <p class="text-center">
                         <?php
-                        echo $totalbooks . " item";
+                        echo '<b> '.$totalbooks. '';
+                        if ($totalbooks == 1)
+                            echo ' item </b>';
                         if ($totalbooks != 1)
-                            echo 's';
-                        echo ' in your cart'
+                            echo ' itens </b>';
+                        echo ' em seu carrinho <br/><br/>'
                         ?>
                     </p>
 
                     <?php
+
                     //To do:
                     // 1. Build sql statement containing ISBNs. Use foreach loop.
                     // 2. Execute sql and display book titles, prices, qty, etc.
                     if (count($bookArray)) {
-                        echo "<table class='text-center' id='cart'><tr><th>ISBN</th><th>Qty</th><th>Add/Remove</th></tr>";
+                        echo "<table class='text-center table table-striped' id='cart'><tr><th width=\"40%\">Título</th><th width=\"10%\">Qtd</th><th width=\"20%\">Preço</th><th width=\"20%\">Total</th><th>Adicionar/Remover</th></tr>";
+
                         foreach ($bookArray as $isbn => $qty) {
-                            echo "
-                     <tr>
-                        <td>
-                           <a class='booktitle' href='ProductPage.php?isbn=$isbn'>$isbn</a> </td>
-                        <td>$qty</td>
-                        <td>
-                           <a href='?addISBN=$isbn'>Add</a><br>
-                           <a href='?deleteISBN=$isbn'>Remove</a>
+                            $query = "SELECT * from bookdescriptions where ISBN = '$isbn'";
+                            $resultado = $conn ->query($query);
+                            $row = $resultado->fetch_assoc();
+                            $total_parcial = $row['price']*$qty;
+                            $sub_total += $total_parcial;
+                            echo '
+                     <tr >
+                        <td class=\'text-justify\' width="40%">
+                           <a class="booktitle" href="ProductPage.php?isbn=$isbn">'.$row['title'].'</a> </td>
+                        <td width="10%">'.$qty.'</td>
+                        <td width="20%">
+                           <a class="booktitle" style="color: #de010c">R$ '.number_format($row['price'], 2, ',', ' ').'</a> </td>
+                        <td width="20%">
+                           <a class="booktitle" style="color: #de010c">R$ '.number_format($total_parcial, 2, ',', ' ').'</a> </td>
+                        <td class=\'text-center\'>
+                           <a href="?addISBN='.$isbn.'">Adicionar</a><br>
+                           <a href="?deleteISBN='.$isbn.'">Remover</a>
                         </td>
-                     </tr>";
+                     </tr>';
+
                         }
+                    }
+                    if ($totalbooks == 0){
+                        $frete =0;
+                    } else {
+                        $frete = ($totalbooks - 1) * 5 + 10;
+                        $totalfinal = $frete + $sub_total;
                     }
                     ?>
                     </table>
+                    <div align="right">
+                        <table >
+
+                                <?php
+                                 echo '<tr ><b>Sub-Total:</b> R$ '.number_format($sub_total, 2, ',', ' ').'</tr><br/>
+                                <tr ><b>Frete:</b> R$ '.number_format($frete, 2, ',', ' ').'</tr><br/>
+                                <tr ><b>Total: <span style="color: #de010c">R$ '.number_format($totalfinal, 2, ',', ' ').'</span></b></tr><br/>';
+                                ?>
+
+                        </table>
+                    </div>
+                    <br/>
+                    <ul class="list-inline text-center">
+
+                        <li class="list-inline-item" style="padding-right: 20px">
+                            <button onclick="window.location.href='index.php'" class="btn btn-info"><i class="fas fa-shopping-cart"></i> Continue Comprando</button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button onclick="window.location.href='checkout01.php'" class="btn  btn-success"><i class="fas fa-arrow-alt-circle-right"></i> Finalizar Compra</button>
+                        </li>
+
+                    </ul>
+                    <br/>
+                    <p class="tamanho-14 text-center">*O envio é de R$ 10,00 para o primeiro livro e R$ 5,00 para cada livro adicional.</p>
                 </ul>
             </div>
         </div>
@@ -157,7 +197,7 @@ if (isset($bookArray)) {
 
 
 ?>
-?>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

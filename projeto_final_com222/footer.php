@@ -1,10 +1,10 @@
-<footer class="page-footer font-small pt-4" style="background-color: #e6e6e6; margin-top: 20px">
+<footer class="page-footer font-small pt-4" style="background-color: #e6e6e6;">
 
     <!-- Footer Links -->
     <div class="container text-center text-md-left">
 
         <!-- Grid row -->
-        <div class="row" style="padding: 15px 0 15px 0">
+        <div class="row" >
 
             <!-- Grid column -->
             <div class="col-md-4 mx-auto text-center">

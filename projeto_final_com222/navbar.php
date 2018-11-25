@@ -19,7 +19,7 @@
                             <button class="btn btn-link float-right" onclick="window.location.href='shoppingCart.php'"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
                         </li>
                         <li class="nav-item right">
-                            <button class="btn btn-link float-right" ><i class="fas fa-user"></i> Sua Conta</button>
+                            <button onclick="window.location.href='checkout01.php'" class="btn btn-link float-right" ><i class="fas fa-user"></i> Sua Conta</button>
                         </li>
                     </lu>
                 </li>
@@ -29,23 +29,8 @@
 
 
 
-        <!--        <form class="form-inline my-2 my-lg-0">-->
-        <!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-        <!--            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-        <!--        </form>-->
-
-
-
-
 <?php
-//$funcao = $_COOKIE['inputFuncao'];
-/*echo '<div class="right">
-        <lu class="navbar-nav mr-auto">
-            <li class="nav-item right">
-                <a class="nav-link" href="logout.php">Logout</a>
-            </li>
 
-    ';*/
 
 if (isset($_COOKIE['inputFuncao']) && $_COOKIE['inputFuncao'] == '1') {
     echo '<li class="nav-item right">
