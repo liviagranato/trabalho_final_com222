@@ -70,57 +70,25 @@ if (isset($bookArray)) {
 <div class="fundo">
     <div class="container fundo-container">
         <div class="row">
-            <div class="col-md-3 mx-auto">
-
-                <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Buscar</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                        <form class="form-group" method="post" action="searchBrowse.php">
-                            <input class="form-control mr-sm-2" name="palavra_chave" id="palavra_chave" type="search" placeholder="Search" aria-label="Search">
-                            <br/>
-                            <input class="btn btn-primary btn-block" value="Buscar" name="submit" id="submit" type="submit" formaction="searchBrowse.php">
-                        </form>
-
-                        </p>
-
-
-                    </div>
-                </div>
-
-                <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Pesquisar</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                        <ul class="list-group">
-                            <?php
-
-
-                            $query = "SELECT distinct bc.* from bookcategories as bc join bookcategoriesbooks as bcb on bc.CategoryID = bcb.CategoryID order by bc.CategoryName asc";
-                            $resultado = $conn->query($query);
-                            if ($resultado->num_rows > 0){
-                                while ($row = $resultado->fetch_assoc()){
-                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'&nome='.$row['CategoryName'].'&tag='.'browse'.'\'">'.$row['CategoryName'].'</a></li>';
-                                }
-                            }
-                            ?>
-                        </ul>
-                        </p>
-                    </div>
-                </div>
-
-            </div>
+            <?php
+            include_once 'menu_lateral.php';
+            ?>
 
             <div class="col-md-8 mx-auto">
                 <ul class="list-group">
                     <p class="text-center">
                         <?php
+                        if (!$totalbooks || $totalbooks == 0){
+                            echo ' Não há itens no carrinho </b>';
+                        } else {
                         echo '<b> '.$totalbooks. '';
+
                         if ($totalbooks == 1)
                             echo ' item </b>';
                         if ($totalbooks != 1)
                             echo ' itens </b>';
-                        echo ' em seu carrinho <br/><br/>'
+                        echo ' em seu carrinho <br/><br/>';
+                        }
                         ?>
                     </p>
 
@@ -129,52 +97,57 @@ if (isset($bookArray)) {
                     //To do:
                     // 1. Build sql statement containing ISBNs. Use foreach loop.
                     // 2. Execute sql and display book titles, prices, qty, etc.
-                    if (count($bookArray)) {
-                        echo "<table class='text-center table table-striped' id='cart'><tr><th width=\"40%\">Título</th><th width=\"10%\">Qtd</th><th width=\"20%\">Preço</th><th width=\"20%\">Total</th><th>Adicionar/Remover</th></tr>";
 
-                        foreach ($bookArray as $isbn => $qty) {
-                            $query = "SELECT * from bookdescriptions where ISBN = '$isbn'";
-                            $resultado = $conn ->query($query);
-                            $row = $resultado->fetch_assoc();
-                            $total_parcial = $row['price']*$qty;
-                            $sub_total += $total_parcial;
-                            echo '
+                        $sub_total=0;
+                        if (count($bookArray)) {
+                            echo "<table class='text-center table table-striped' id='cart'><tr><th width=\"40%\">Título</th><th width=\"10%\">Qtd</th><th width=\"20%\">Preço</th><th width=\"20%\">Total</th><th>Adicionar/Remover</th></tr>";
+
+                            foreach ($bookArray as $isbn => $qty) {
+                                $query = "SELECT * from bookdescriptions where ISBN = '$isbn'";
+                                $resultado = $conn->query($query);
+                                $row = $resultado->fetch_assoc();
+                                $total_parcial = $row['price'] * $qty;
+                                $sub_total += $total_parcial;
+                                echo '
                      <tr >
                         <td class=\'text-justify\' width="40%">
-                           <a class="booktitle" href="ProductPage.php?isbn=$isbn">'.$row['title'].'</a> </td>
-                        <td width="10%">'.$qty.'</td>
+                           <a class="booktitle" href="ProductPage.php?isbn=$isbn">' . $row['title'] . '</a> </td>
+                        <td width="10%">' . $qty . '</td>
                         <td width="20%">
-                           <a class="booktitle" style="color: #de010c">R$ '.number_format($row['price'], 2, ',', ' ').'</a> </td>
+                           <a class="booktitle" style="color: #de010c">R$ ' . number_format($row['price'], 2, ',', ' ') . '</a> </td>
                         <td width="20%">
-                           <a class="booktitle" style="color: #de010c">R$ '.number_format($total_parcial, 2, ',', ' ').'</a> </td>
+                           <a class="booktitle" style="color: #de010c">R$ ' . number_format($total_parcial, 2, ',', ' ') . '</a> </td>
                         <td class=\'text-center\'>
-                           <a href="?addISBN='.$isbn.'">Adicionar</a><br>
-                           <a href="?deleteISBN='.$isbn.'">Remover</a>
+                           <a href="?addISBN=' . $isbn . '">Adicionar</a><br>
+                           <a href="?deleteISBN=' . $isbn . '">Remover</a>
                         </td>
                      </tr>';
 
+                            }
                         }
-                    }
-                    if ($totalbooks == 0){
-                        $frete =0;
-                    } else {
-                        $frete = ($totalbooks - 1) * 5 + 10;
-                        $totalfinal = $frete + $sub_total;
-                    }
-                    ?>
-                    </table>
-                    <div align="right">
-                        <table >
+                        if ($totalbooks == 0) {
+                            $frete = 0;
+                        } else {
+                            $frete = ($totalbooks - 1) * 5 + 10;
+                            $totalfinal = $frete + $sub_total;
+                        }
 
-                                <?php
+
+                    echo '</table>
+                    <div align="right">
+                        <table >';
+
+
                                  echo '<tr ><b>Sub-Total:</b> R$ '.number_format($sub_total, 2, ',', ' ').'</tr><br/>
                                 <tr ><b>Frete:</b> R$ '.number_format($frete, 2, ',', ' ').'</tr><br/>
                                 <tr ><b>Total: <span style="color: #de010c">R$ '.number_format($totalfinal, 2, ',', ' ').'</span></b></tr><br/>';
-                                ?>
 
-                        </table>
+
+                       echo '</table>
                     </div>
-                    <br/>
+                    <br/>';
+
+                    ?>
                     <ul class="list-inline text-center">
 
                         <li class="list-inline-item" style="padding-right: 20px">
