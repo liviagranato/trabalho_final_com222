@@ -29,46 +29,9 @@ include_once 'databaseConnection.php';
 <div class="fundo">
     <div class="container fundo-container">
         <div class="row">
-            <div class="col-md-3 mx-auto">
-
-                <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Buscar</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                        <form class="form-group" method="post" action="searchBrowse.php">
-                            <input class="form-control mr-sm-2" name="palavra_chave" id="palavra_chave" type="search" placeholder="Search" aria-label="Search">
-                            <br/>
-                            <input class="btn btn-primary btn-block" value="Buscar" name="submit" id="submit" type="submit" formaction="searchBrowse.php">
-                        </form>
-
-                        </p>
-
-
-                    </div>
-                </div>
-
-                <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Pesquisar</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                        <ul class="list-group">
-                            <?php
-
-
-                            $query = "SELECT distinct bc.* from bookcategories as bc join bookcategoriesbooks as bcb on bc.CategoryID = bcb.CategoryID order by bc.CategoryName asc";
-                            $resultado = $conn->query($query);
-                            if ($resultado->num_rows > 0){
-                                while ($row = $resultado->fetch_assoc()){
-                                    echo '<li class="list-group-item"><a href="#" onclick="window.location.href=\'searchBrowse.php?id='.$row['CategoryID'].'&nome='.$row['CategoryName'].'\'">'.$row['CategoryName'].'</a></li>';
-                                }
-                            }
-                            ?>
-                        </ul>
-                        </p>
-                    </div>
-                </div>
-
-            </div>
+            <?php
+            include_once 'menu_lateral.php';
+            ?>
 
             <?php
             $tag = '';
@@ -79,7 +42,7 @@ include_once 'databaseConnection.php';
                 $tag = 'browse';
             }
 
-            if ($tag=='search') {
+            if ($tag=='search'){
                 echo '<div class="col-md-8 mx-auto">
                 <ul class="list-group">';
 
@@ -94,12 +57,10 @@ include_once 'databaseConnection.php';
                             or bd.title like '%$palavra%'
                             or bd.description like '%$palavra%'
                             or bd.publisher like '%$palavra%' group by bd.ISBN order by bd.title asc";
-
-                $resultado = $conn->query($query);
-
-
-                echo '<h3>Resultados para sua busca: "' . $palavra . '"</h3><br/>';
-                if ($resultado->num_rows > 0) {
+                $resultado = $conn -> query($query);
+                echo '<h3>Resultados para sua busca: "'.$palavra.'"</h3><br/>
+                <p>Foram retornados '.$resultado->num_rows.' resultados</p>';
+                if ($resultado->num_rows>0){
 
                     while ($row = $resultado->fetch_assoc()) {
                         $s = substr($row['description'], 0, 260);
@@ -114,7 +75,7 @@ include_once 'databaseConnection.php';
                                        <h4><a href="#" onclick="window.location.href=\'productPage.php?id=' . $row['ISBN'] . '\'">' . $row['title'] . '</a></h4> 
                                        <p>Por ';
                         while ($authores = $resultado_authores->fetch_array()) {
-                            echo '<a href="#" onclick="window.location.href=\'index.php?id=' . $row['ISBN'] . '\'">' . $authores['nameF'] . ' ' . $authores['nameL'] . '</a> ';
+                            echo '<a href="#" onclick="window.location.href=\'authorSearch.php?nome=' .$authores['nameF'].'&sobrenome='.$authores['nameL'].'\'">' . $authores['nameF'] . ' ' . $authores['nameL'] . '</a> ';
                         }
                         echo '</p>
                                             <table>
@@ -132,6 +93,7 @@ include_once 'databaseConnection.php';
                 echo '</ul>
             </div>';
 
+
             } else{
             echo '<div class="col-md-8 mx-auto">
                 <ul class="list-group">';
@@ -145,11 +107,15 @@ include_once 'databaseConnection.php';
                           join bookauthors as ba  on ba.AuthorID=bab.AuthorID 
                           where bcb.CategoryID = '$id' group by bd.ISBN order by bd.title asc";
                 $resultado = $conn -> query($query);
+                echo '<h3>Resultados para '.$nome.'</h3><br/>
 
-                echo '<h3>Resultados para '.$nome.'</h3><br/>';
+                <p>Foram retornados '.$resultado->num_rows.' resultados</p>';
+
 
                 if ($resultado->num_rows>0){
+
                     while($row = $resultado->fetch_assoc()){
+
                         $s = substr($row['description'], 0, 260);
                         $result = substr($s, 0, strrpos($s, ' '));
                         $more = '<a onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" href="#">Mais...</a>';
@@ -162,10 +128,10 @@ include_once 'databaseConnection.php';
                                        <h4><a href="#" onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'">'.$row['title'].'</a></h4> 
                                      
                                          <p>Por ';
-                                         while ($authores = $resultado_authores->fetch_array()){
-                                            echo'<a href="#">'.$authores['nameF'].' '.$authores['nameL'].'</a> ';
-                                    }
-                                     echo '</p>
+                        while ($authores = $resultado_authores->fetch_array()){
+                            echo'<a onclick="window.location.href=\'authorSearch.php?nome=' .$authores['nameF'].'&sobrenome='.$authores['nameL'].'\'" href="#">'.$authores['nameF'].' '.$authores['nameL'].'</a> ';
+                        }
+                        echo '</p>
                                             <table>
                                                 <td>
                                                     <img onclick="window.location.href=\'productPage.php?id='.$row['ISBN'].'\'" src="http://yorktown.cbe.wwu.edu/sandvig/mis314/assignments/bookstore/bookimages/'.$row['ISBN'].'.01.THUMBZZZ.jpg">
@@ -177,11 +143,12 @@ include_once 'databaseConnection.php';
                                   </div>
                               </li>';
                     }
+
                 }
                 echo '</ul>
             </div>';
-
             }
+
         ?>
         </div>
     </div>
