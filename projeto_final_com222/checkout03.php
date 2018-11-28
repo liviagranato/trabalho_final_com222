@@ -185,10 +185,10 @@ if ($flag && isset($_COOKIE['myCart2'])) {
         <br/>
         </div></div></div>';
 
-    ini_set('sendmail_from','liviagranato@hotmail.com');
+   /* ini_set('sendmail_from','liviagranato@hotmail.com');
     ini_set('SMTP','myserver');
     ini_set('smtp_port',25);
-    mail($email, 'Compra no site LivrosWebDev', 'Sua compra foi realizada com sucesso!',"From: liviagranato@hotmail.com" . "\r\n");
+    mail($email, 'Compra no site LivrosWebDev', 'Sua compra foi realizada com sucesso!',"From: liviagranato@hotmail.com" . "\r\n");*/
 
 } else {
     echo '<p style="height: 500px">Não há nada no carrinho. <a href="#" onclick="window.location.href=\'index.php\'">Retornar às compras</a></p></div></div>';
